@@ -1,6 +1,13 @@
 # room_booking
 
-A new Flutter project.
+Flutter room booking app with:
+
+BloC
+auto_route
+get_ite
+shared_preferences
+http
+clean architecture
 
 ## Getting Started
 
