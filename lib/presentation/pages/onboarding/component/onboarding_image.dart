@@ -14,7 +14,7 @@ class OnboardingImage extends StatelessWidget {
         itemBuilder: (context, index) => Image.asset(
           cubit.state.onboardingList[index].image ?? '',
         ),
-        onPageChanged: cubit.goTo,
+        onPageChanged: cubit.swipping,
       ),
     );
   }

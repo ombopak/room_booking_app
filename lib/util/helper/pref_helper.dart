@@ -16,4 +16,10 @@ class PrefHelper {
   Future<bool> saveToken(String token) async {
     return await _pref.setString('token', token);
   }
+
+  Future<bool> setFisrtInstall() async {
+    return await _pref.setBool('first_install', false);
+  }
+
+  bool get isFirstInstall => _pref.getBool('isFirstInstall') ?? true;
 }

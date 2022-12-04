@@ -1,34 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:thengoding/config/config.dart';
+import 'package:thengoding/data/model/trip/trips.dart';
 import 'package:thengoding/data/src/img_string.dart';
+import 'package:thengoding/presentation/pages/discover/trips/trips_cubit.dart';
 import 'package:thengoding/util/util.dart';
 
 class TripsYourRoomies extends StatelessWidget {
-  const TripsYourRoomies({Key? key}) : super(key: key);
-
+  const TripsYourRoomies({Key? key, required this.yourRoomies})
+      : super(key: key);
+  final List<Trip> yourRoomies;
   @override
   Widget build(BuildContext context) {
+    final cubit = BlocProvider.of<TripsCubit>(context);
     return Expanded(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           _header(),
-          _roomiesList(),
+          cubit.state.status == HttpStateStatus.loading
+              ? Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                    ],
+                  ),
+                )
+              : _roomiesList(context),
         ],
       ),
     );
   }
 
-  Widget _roomiesList() {
+  Widget _roomiesList(BuildContext context) {
     return Expanded(
       child: ListView.builder(
-        itemCount: 3,
-        itemBuilder: (c, i) => _roomiesItem(),
+        itemCount: yourRoomies.length,
+        itemBuilder: (c, i) => _roomiesItem(yourRoomies[i]),
       ),
     );
   }
 
-  Widget _roomiesItem() {
+  Widget _roomiesItem(Trip trip) {
     return Container(
       height: 72.h,
       margin: EdgeInsets.only(
@@ -48,9 +63,9 @@ class TripsYourRoomies extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('Thengoding', style: AppFont.componentMedium),
+                Text(trip.name ?? '', style: AppFont.componentMedium),
                 Text(
-                  'Indonesia',
+                  trip.location ?? '',
                   style: AppFont.componentSmall.copyWith(color: AppColor.ink02),
                 ),
               ],
@@ -72,7 +87,7 @@ class TripsYourRoomies extends StatelessWidget {
         children: [
           Center(
             child: CircleAvatar(
-              radius: 28.w,
+              radius: 30.w,
               backgroundColor: AppColor.ink03,
             ),
           ),
@@ -93,7 +108,7 @@ class TripsYourRoomies extends StatelessWidget {
       padding: EdgeInsets.only(
         left: AppDimen.w16,
         right: AppDimen.w16,
-        top: AppDimen.h60,
+        top: AppDimen.h40,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.max,

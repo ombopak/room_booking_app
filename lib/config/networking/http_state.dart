@@ -16,3 +16,10 @@ abstract class HttpState {
     String method,
   );
 }
+
+enum HttpStateStatus {
+  initial,
+  loading,
+  error,
+  success,
+}

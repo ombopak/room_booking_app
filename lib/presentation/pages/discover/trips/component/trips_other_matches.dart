@@ -1,18 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:thengoding/config/config.dart';
+import 'package:thengoding/data/model/trip/trips.dart';
 import 'package:thengoding/data/src/img_string.dart';
+import 'package:thengoding/presentation/pages/discover/trips/trips_cubit.dart';
 import 'package:thengoding/util/util.dart';
 
 class TripsOtherMatches extends StatelessWidget {
-  const TripsOtherMatches({Key? key}) : super(key: key);
+  const TripsOtherMatches({Key? key, required this.otherMatches})
+      : super(key: key);
+
+  final List<Trip> otherMatches;
 
   @override
   Widget build(BuildContext context) {
+    final cubit = BlocProvider.of<TripsCubit>(context);
     return Expanded(
       child: Column(
         children: [
           _header(),
-          _roomiesList(context),
+          cubit.state.status == HttpStateStatus.loading
+              ? Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                    ],
+                  ),
+                )
+              : _roomiesList(context),
         ],
       ),
     );
@@ -22,13 +38,13 @@ class TripsOtherMatches extends StatelessWidget {
     return Expanded(
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: 3,
-        itemBuilder: (c, i) => _roomiesItem(ctx),
+        itemCount: otherMatches.length,
+        itemBuilder: (c, i) => _roomiesItem(ctx, otherMatches[i]),
       ),
     );
   }
 
-  Widget _roomiesItem(BuildContext ctx) {
+  Widget _roomiesItem(BuildContext ctx, Trip trip) {
     return Container(
         width: MediaQuery.of(ctx).size.width / 2 - 32,
         margin: EdgeInsets.only(
@@ -54,10 +70,10 @@ class TripsOtherMatches extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'The',
+                        trip.name ?? '',
                         style: AppFont.paragraphLargeBold,
                       ),
-                      Text('\$500', style: AppFont.paragraphSmall),
+                      Text('\$${trip.price}', style: AppFont.paragraphSmall),
                     ],
                   ),
                   20.0.height,
