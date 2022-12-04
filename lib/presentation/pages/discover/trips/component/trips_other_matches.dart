@@ -69,9 +69,12 @@ class TripsOtherMatches extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        trip.name ?? '',
-                        style: AppFont.paragraphLargeBold,
+                      Expanded(
+                        child: Text(
+                          trip.name ?? '',
+                          style: AppFont.paragraphLargeBold,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       Text('\$${trip.price}', style: AppFont.paragraphSmall),
                     ],

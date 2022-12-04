@@ -3,22 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
-import 'package:thengoding/config/router/router.dart';
+import 'package:thengoding/config/router/app_router.gr.dart';
+import 'package:thengoding/config/router/middleware/auth_guard.dart';
+import 'package:thengoding/config/router/middleware/first_install_guard.dart';
 import 'package:thengoding/util/helper/helper.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  PrefHelper.instance.init();
-  GetIt.I.registerSingleton<AppRouter>(AppRouter());
-  Logger.root.level = Level.ALL;
+  await PrefHelper.instance.init();
+  GetIt.I.registerSingleton<AppRouter>(
+    AppRouter(
+      firstIntallGuard: FirstIntallGuard(),
+      authGuard: AuthGuard(),
+    ),
+  );
+  Logger.root.level = Level.OFF;
   Logger.root.onRecord.listen((record) {
     debugPrint(record.message);
   });
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override

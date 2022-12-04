@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
 import 'package:thengoding/config/networking/networking.dart';
-import 'package:thengoding/config/router/router.dart';
+import 'package:thengoding/config/router/app_router.gr.dart';
 import 'package:thengoding/domain/controller/controller.dart';
 import 'package:thengoding/util/helper/helper.dart';
 
